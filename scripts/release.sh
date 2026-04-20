@@ -27,8 +27,8 @@ REPO_ROOT="$(pwd)"
 
 [[ -d "$PROJECT" ]] || err "Run from the repo root; $PROJECT not found."
 
-if [[ -n "$(git status --porcelain)" ]]; then
-    err "Git tree is dirty. Commit or stash before releasing."
+if ! git diff-index --quiet HEAD -- ; then
+    err "Git tree has uncommitted changes. Commit or stash before releasing."
 fi
 
 if ! xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" >/dev/null 2>&1; then

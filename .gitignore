@@ -17,6 +17,7 @@ dist/
 *.dmg
 *.zip
 *.xcarchive
+release.log
 
 # Local-only overrides
 ExportOptions.local.plist
