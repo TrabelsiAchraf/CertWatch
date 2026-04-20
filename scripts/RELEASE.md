@@ -8,7 +8,7 @@ which the App Sandbox forbids.
 
 1. **Developer ID Application certificate** — create at
    https://developer.apple.com/account/resources/certificates/list
-   (Team `D44ZSJA8CM`), download the `.cer`, open it to install in the login
+   (Team `QN66UQNDZR`), download the `.cer`, open it to install in the login
    Keychain alongside its private key.
 
 2. **App-Specific Password** — generate at https://appleid.apple.com
@@ -18,8 +18,8 @@ which the App Sandbox forbids.
 
    ```bash
    xcrun notarytool store-credentials "CertWatchNotary" \
-     --apple-id "a.trabelsi@oodrive.com" \
-     --team-id "D44ZSJA8CM" \
+     --apple-id "trabelsiachraf.mobile@gmail.com" \
+     --team-id "QN66UQNDZR" \
      --password "<app-specific password from step 2>"
    ```
 

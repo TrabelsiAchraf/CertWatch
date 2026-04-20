@@ -9,7 +9,7 @@ set -euo pipefail
 PROJECT="CertWatch.xcodeproj"
 SCHEME="CertWatch"
 BUNDLE_NAME="CertWatch"
-TEAM_ID="D44ZSJA8CM"
+TEAM_ID="QN66UQNDZR"
 NOTARY_PROFILE="CertWatchNotary"
 
 log() { printf '\033[1;34m▶ %s\033[0m\n' "$*"; }
