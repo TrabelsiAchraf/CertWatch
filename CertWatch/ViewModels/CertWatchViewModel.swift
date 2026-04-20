@@ -93,6 +93,9 @@ class CertWatchViewModel: ObservableObject {
     @Published var recentChanges: [ChangeEvent] = []
     @Published var copyFeedback: String? = nil
 
+    /// Set to push the certificate detail view over the popover's tab content.
+    @Published var selectedCertificate: Certificate? = nil
+
     // MARK: - Services
     private let keychainService = KeychainService.shared
     private let profileService = ProvisioningProfileService.shared
@@ -240,6 +243,14 @@ class CertWatchViewModel: ObservableObject {
         }
     }
 
+    /// All provisioning profiles that reference the given certificate by SHA-1 or name.
+    func profiles(using cert: Certificate) -> [ProvisioningProfile] {
+        profiles.filter {
+            $0.certificateSHA1s.contains(cert.sha1Fingerprint)
+                || $0.certificateNames.contains(cert.name)
+        }
+    }
+
     var alertCount: Int {
         expiringSoonCertificates.count + expiringSoonProfiles.count + brokenProfiles.count
     }
@@ -280,6 +291,11 @@ class CertWatchViewModel: ObservableObject {
                 self.profiles = profs.sorted { $0.expirationDate < $1.expirationDate }
                 self.lastRefresh = Date()
                 self.isLoading = false
+
+                if let selected = self.selectedCertificate,
+                   !certs.contains(where: { $0.sha1Fingerprint == selected.sha1Fingerprint }) {
+                    self.selectedCertificate = nil
+                }
 
                 // Detect changes
                 if !previousCerts.isEmpty || !previousProfiles.isEmpty {

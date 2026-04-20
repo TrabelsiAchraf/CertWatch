@@ -9,17 +9,21 @@ struct PopoverRootView: View {
                 PopoverHeader(viewModel: viewModel)
                 Rectangle().fill(Color.white.opacity(0.08)).frame(height: 0.5)
 
-                ScrollView {
-                    Group {
-                        switch viewModel.selectedTab {
-                        case .overview:     OverviewTabView(viewModel: viewModel)
-                        case .certificates: CertificatesTabView(viewModel: viewModel)
-                        case .profiles:     ProfilesTabView(viewModel: viewModel)
+                if let cert = viewModel.selectedCertificate {
+                    CertDetailView(cert: cert, viewModel: viewModel)
+                } else {
+                    ScrollView {
+                        Group {
+                            switch viewModel.selectedTab {
+                            case .overview:     OverviewTabView(viewModel: viewModel)
+                            case .certificates: CertificatesTabView(viewModel: viewModel)
+                            case .profiles:     ProfilesTabView(viewModel: viewModel)
+                            }
                         }
+                        .padding(.horizontal, 12)
+                        .padding(.bottom, 12)
+                        .padding(.top, 4)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.bottom, 12)
-                    .padding(.top, 4)
                 }
 
                 Rectangle().fill(Color.white.opacity(0.08)).frame(height: 0.5)

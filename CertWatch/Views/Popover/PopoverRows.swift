@@ -83,43 +83,54 @@ struct PopoverCertRow: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 7, style: .continuous)
-                    .fill(iconBgColor)
-                Image(systemName: "checkmark.seal.fill")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(iconColor)
-            }
-            .frame(width: 28, height: 28)
+        Button {
+            viewModel.selectedCertificate = cert
+        } label: {
+            HStack(alignment: .top, spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 7, style: .continuous)
+                        .fill(iconBgColor)
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(iconColor)
+                }
+                .frame(width: 28, height: 28)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Text(cert.name)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(Theme.text)
-                    .lineLimit(1)
-
-                HStack(spacing: 6) {
-                    TypeBadge(type: cert.type.rawValue)
-                    Text(cert.teamName)
-                        .font(.system(size: 10))
-                        .foregroundStyle(Theme.textTert)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(cert.name)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Theme.text)
                         .lineLimit(1)
+
+                    HStack(spacing: 6) {
+                        TypeBadge(type: cert.type.rawValue)
+                        Text(cert.teamName)
+                            .font(.system(size: 10))
+                            .foregroundStyle(Theme.textTert)
+                            .lineLimit(1)
+                    }
+
+                    HealthBar(expirationDate: cert.expirationDate)
+                        .padding(.top, 2)
                 }
 
-                HealthBar(expirationDate: cert.expirationDate)
-                    .padding(.top, 2)
-            }
+                VStack(alignment: .trailing, spacing: 2) {
+                    HealthPill(expirationDate: cert.expirationDate, compact: true)
+                    Text("Exp \(Self.dateFormatter.string(from: cert.expirationDate))")
+                        .font(.system(size: 10))
+                        .foregroundStyle(Theme.textTert)
+                }
 
-            VStack(alignment: .trailing, spacing: 2) {
-                HealthPill(expirationDate: cert.expirationDate, compact: true)
-                Text("Exp \(Self.dateFormatter.string(from: cert.expirationDate))")
-                    .font(.system(size: 10))
-                    .foregroundStyle(Theme.textTert)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(Theme.textQuat)
+                    .padding(.leading, 2)
             }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 9)
+            .contentShape(Rectangle())
+            .glassCard(cornerRadius: 12, material: .thinMaterial)
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 9)
-        .glassCard(cornerRadius: 12, material: .thinMaterial)
+        .buttonStyle(.plain)
     }
 }

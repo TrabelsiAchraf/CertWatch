@@ -9,7 +9,9 @@ struct PopoverFooter: View {
                 .fill(Theme.ok)
                 .frame(width: 6, height: 6)
             if let last = viewModel.lastRefresh {
-                Text("Updated \(last, style: .relative) ago")
+                TimelineView(.periodic(from: .now, by: 30)) { context in
+                    Text("Updated \(Self.relativeLabel(last, now: context.date))")
+                }
             } else {
                 Text("Not yet refreshed")
             }
@@ -45,5 +47,16 @@ struct PopoverFooter: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 9)
         .background(.ultraThinMaterial)
+    }
+
+    private static func relativeLabel(_ date: Date, now: Date) -> String {
+        let seconds = Int(now.timeIntervalSince(date))
+        if seconds < 60 { return "just now" }
+        let minutes = seconds / 60
+        if minutes < 60 { return "\(minutes) min ago" }
+        let hours = minutes / 60
+        if hours < 24 { return "\(hours)h ago" }
+        let days = hours / 24
+        return "\(days)d ago"
     }
 }

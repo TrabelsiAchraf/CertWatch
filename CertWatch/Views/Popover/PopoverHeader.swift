@@ -41,12 +41,20 @@ struct PopoverHeader: View {
             .padding(.top, 10)
             .padding(.bottom, 10)
 
-            // Segmented tabs
-            HStack {
-                SegmentedTabs(selection: $viewModel.selectedTab)
+            // Segmented tabs (hidden when a cert detail is being shown)
+            if viewModel.selectedCertificate == nil {
+                HStack {
+                    SegmentedTabs(selection: Binding(
+                        get: { viewModel.selectedTab },
+                        set: { newValue in
+                            viewModel.selectedCertificate = nil
+                            viewModel.selectedTab = newValue
+                        }
+                    ))
+                }
+                .padding(.horizontal, 12)
+                .padding(.bottom, 10)
             }
-            .padding(.horizontal, 12)
-            .padding(.bottom, 10)
         }
     }
 }
@@ -108,6 +116,7 @@ struct SegmentedTabs: View {
                         }
                     }
                 )
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
     }
