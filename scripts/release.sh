@@ -31,7 +31,7 @@ if [[ -n "$(git status --porcelain)" ]]; then
     err "Git tree is dirty. Commit or stash before releasing."
 fi
 
-if ! xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" --quiet 2>/dev/null | head -n 1 > /dev/null; then
+if ! xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" >/dev/null 2>&1; then
     err "notarytool profile '$NOTARY_PROFILE' not configured. See scripts/RELEASE.md."
 fi
 
