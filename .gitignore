@@ -1,0 +1,22 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+*.xcscheme.pbxuser
+*.pbxuser
+*.perspectivev3
+!default.xcscheme
+
+# macOS
+.DS_Store
+
+# Release artifacts
+dist/
+*.dmg
+*.zip
+*.xcarchive
+
+# Local-only overrides
+ExportOptions.local.plist
