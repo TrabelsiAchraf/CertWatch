@@ -98,8 +98,12 @@ SUBMIT_OUTPUT="$(xcrun notarytool submit "$ZIP" \
     --wait 2>&1)"
 echo "$SUBMIT_OUTPUT"
 
-SUBMISSION_ID="$(echo "$SUBMIT_OUTPUT" | awk '/id:/ {print $2; exit}')"
-STATUS="$(echo "$SUBMIT_OUTPUT" | awk '/status:/ {print $2; exit}')"
+# notarytool prints multiple "Current status: ..." progress lines followed
+# by a final "  status: <Accepted|Invalid|Rejected>" summary. Match only
+# lines that start with optional whitespace then the literal "status:",
+# and take the LAST one so we pick up the final verdict.
+SUBMISSION_ID="$(echo "$SUBMIT_OUTPUT" | awk '/^[[:space:]]*id:/ {print $2; exit}')"
+STATUS="$(echo "$SUBMIT_OUTPUT" | awk '/^[[:space:]]*status:/ {s=$2} END {print s}')"
 
 if [[ "$STATUS" != "Accepted" ]]; then
     log "Fetching notary log for $SUBMISSION_ID"
